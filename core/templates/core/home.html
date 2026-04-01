@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="hero">
+    <h1>Google SERP Competitor Scraper</h1>
+    <p>Upload your keywords and instantly discover who dominates the search results.</p>
+</section>
+
+<section class="tool-box">
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Upload Keywords CSV</label>
+            <input type="file" name="keywords_file" required>
+        </div>
+
+        <div class="form-group">
+            <label>Select Search Location</label>
+
+            <div class="location-grid">
+
+                <label class="location-card">
+                    <input type="radio" name="location" value="us" checked>
+                    <span>USA</span>
+                </label>
+
+                <label class="location-card">
+                    <input type="radio" name="location" value="ca">
+                    <span>Canada</span>
+                </label>
+
+                <label class="location-card">
+                    <input type="radio" name="location" value="uk">
+                    <span>UK</span>
+                </label>
+
+                <label class="location-card">
+                    <input type="radio" name="location" value="in">
+                    <span>India</span>
+                </label>
+
+                <label class="location-card">
+                    <input type="radio" name="location" value="au">
+                    <span>Australia</span>
+                </label>
+
+                <label class="location-card">
+                    <input type="radio" name="location" value="cn">
+                    <span>China</span>
+                </label>
+
+                <label class="location-card">
+                    <input type="radio" name="location" value="jp">
+                    <span>Japan</span>
+                </label>
+
+            </div>
+        </div>
+
+        <button class="run-btn">Run Competitor Analysis</button>
+
+    </form>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,151 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f5f7fb;
+    color: #1f2933;
+}
+
+.navbar {
+    background: white;
+    padding: 18px 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 20px 20px;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #6b7280;
+}
+
+.tool-box {
+    max-width: 700px;
+    margin: 40px auto;
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.location-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.location-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.location-card:hover {
+    background: #f1f5ff;
+}
+
+.location-card input {
+    display: none;
+}
+
+.location-card span {
+    font-size: 14px;
+}
+
+.run-btn {
+    width: 100%;
+    padding: 14px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.run-btn:hover {
+    background: #1d4ed8;
+}
+
+.footer {
+    background: #0f172a;
+    color: white;
+    margin-top: 80px;
+}
+
+.footer-container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 50px 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-left h3 {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.footer-left p {
+    color: #94a3b8;
+    max-width: 320px;
+}
+
+.footer-right {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.footer-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.footer-link:hover {
+    color: #3b82f6;
+}
+
+.footer-bottom {
+    border-top: 1px solid #1e293b;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    color: #94a3b8;
+}
+

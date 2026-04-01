@@ -1,0 +1,59 @@
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SERP Competitor Scraper</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Static CSS -->
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">SERP Tool</div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-left">
+            <h3>SERP Competitor Tool</h3>
+            <p>Built to analyze Google search competitors faster and smarter.</p>
+        </div>
+
+        <div class="footer-right">
+
+            <a href="https://github.com/TuhinSubhraSikdar" target="_blank" class="footer-link">
+                GitHub
+            </a>
+
+            <a href="https://in.linkedin.com/in/tuhin-subhra-sikdar" target="_blank" class="footer-link">
+                LinkedIn
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>Designed & Developed by <strong>Tuhin Subhra Sikdar</strong></p>
+    </div>
+</footer>
+
+<script src="{% static 'core/js/script.js' %}"></script>
+
+</body>
+</html>
