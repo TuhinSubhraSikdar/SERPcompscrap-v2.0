@@ -5,7 +5,7 @@
 
 <section class="hero">
     <h1>Google SERP Competitor Scraper</h1>
-    <p>Upload your keywords and instantly discover who dominates the search results.</p>
+    <p>Upload keywords, add your API key, and discover who dominates search.</p>
 </section>
 
 <section class="tool-box">
@@ -13,11 +13,19 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
+        <!-- API KEY -->
+        <div class="form-group">
+            <label>Enter Serper API Key</label>
+            <input type="text" name="api_key" class="api-input" placeholder="Paste your API key here..." required>
+        </div>
+
+        <!-- FILE -->
         <div class="form-group">
             <label>Upload Keywords CSV</label>
             <input type="file" name="keywords_file" required>
         </div>
 
+        <!-- LOCATION -->
         <div class="form-group">
             <label>Select Search Location</label>
 
@@ -61,10 +69,64 @@
             </div>
         </div>
 
-        <button class="run-btn">Run Competitor Analysis</button>
+        <button class="run-btn">🚀 Run Competitor Analysis</button>
 
     </form>
 
 </section>
+
+
+<!-- RESULT SECTION -->
+{% if result %}
+
+<section class="results">
+
+    {% if result.error %}
+        <div class="error-box">
+            {{ result.error }}
+        </div>
+    {% else %}
+
+        <div class="result-card">
+            <h2>📊 Analysis Result</h2>
+
+            <div class="result-grid">
+                <div class="stat-box">
+                    <h3>{{ result.total_keywords }}</h3>
+                    <p>Keywords</p>
+                </div>
+
+                <div class="stat-box">
+                    <h3>{{ result.total_domains }}</h3>
+                    <p>Domains Found</p>
+                </div>
+
+                <div class="stat-box">
+                    <h3>{{ result.top_domain }}</h3>
+                    <p>Top Competitor</p>
+                </div>
+            </div>
+
+            <div class="download-section">
+                <a href="/competitor_summary.csv" download class="download-btn">
+                    Download Summary
+                </a>
+
+                <a href="/keyword_competitor_table.csv" download class="download-btn">
+                    Keyword Table
+                </a>
+
+                <a href="/number1_rankings.csv" download class="download-btn">
+                    #1 Rankings
+                </a>
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endif %}
 
 {% endblock %}

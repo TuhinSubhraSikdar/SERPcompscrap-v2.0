@@ -40,3 +40,12 @@ for (let i = 0; i < 20; i++) {
 
     bg.appendChild(card);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    const loader = document.getElementById("loader");
+
+    form.addEventListener("submit", function () {
+        loader.classList.remove("hidden");
+    });
+});

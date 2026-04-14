@@ -3,12 +3,6 @@ import requests
 from urllib.parse import urlparse
 from collections import Counter
 import time
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-API_KEY = os.getenv("SERPER_API_KEY")
 
 
 def get_domain(url):
@@ -16,16 +10,50 @@ def get_domain(url):
     return domain.replace("www.", "")
 
 
-def run_scraper(csv_file_path, location_code):
+def run_scraper(csv_file_path, location_code, api_key):
 
-    df = pd.read_csv(csv_file_path)
-    keywords = df["keyword"].dropna().tolist()
+    # ✅ CHECK API KEY
+    if not api_key:
+        return {"error": "API Key is required ❌"}
+
+    # ✅ SAFE CSV LOAD (ROBUST)
+    try:
+        df = pd.read_csv(csv_file_path, encoding="utf-8")
+
+        # fallback if pandas reads empty due to encoding
+        if df.empty:
+            df = pd.read_csv(csv_file_path, encoding="latin1")
+
+    except pd.errors.EmptyDataError:
+        return {"error": "CSV file is empty ❌"}
+
+    except Exception as e:
+        return {"error": f"CSV read error: {str(e)} ❌"}
+
+    # ✅ CLEAN COLUMN NAMES
+    df.columns = df.columns.str.strip().str.lower()
+
+    # ✅ VALIDATE COLUMN
+    if "keyword" not in df.columns:
+        return {
+            "error": f"CSV must contain 'keyword' column. Found: {list(df.columns)} ❌"
+        }
+
+    keywords = df["keyword"].dropna().astype(str).tolist()
+
+    if not keywords:
+        return {"error": "No keywords found in CSV ❌"}
+
+    print("✅ TOTAL KEYWORDS:", len(keywords))
 
     all_domains = []
     keyword_rows = []
     number1 = Counter()
 
+    # ✅ LOOP THROUGH KEYWORDS
     for keyword in keywords:
+
+        print(f"Processing: {keyword}")
 
         url = "https://google.serper.dev/search"
 
@@ -37,30 +65,35 @@ def run_scraper(csv_file_path, location_code):
         }
 
         headers = {
-            "X-API-KEY": API_KEY,
+            "X-API-KEY": api_key,
             "Content-Type": "application/json"
         }
 
-        response = requests.post(url, json=payload, headers=headers)
+        try:
+            response = requests.post(url, json=payload, headers=headers)
 
-        if response.status_code != 200:
+            if response.status_code != 200:
+                print("❌ API ERROR:", response.text)
+                continue
+
+            data = response.json()
+
+        except Exception as e:
+            print("❌ REQUEST FAILED:", str(e))
             continue
 
-        data = response.json()
+        results = data.get("organic") or data.get("organic_results") or []
 
-        if "organic" in data:
-            results = data["organic"]
-        elif "organic_results" in data:
-            results = data["organic_results"]
-        else:
+        if not results:
+            print(f"⚠️ No results for: {keyword}")
             continue
 
         for position, r in enumerate(results, start=1):
 
-            if "link" not in r:
+            link = r.get("link")
+            if not link:
                 continue
 
-            link = r["link"]
             domain = get_domain(link)
 
             all_domains.append(domain)
@@ -69,18 +102,31 @@ def run_scraper(csv_file_path, location_code):
             if position == 1:
                 number1[domain] += 1
 
-        time.sleep(1.5)
+        # 🔥 Avoid rate limit
+        time.sleep(1.2)
 
-    # SAVE FILES
+    # ✅ HANDLE NO DATA
+    if not all_domains:
+        return {"error": "No results fetched (API issue or bad keywords) ❌"}
+
+    # ✅ BUILD SUMMARY
     summary = Counter(all_domains)
 
-    pd.DataFrame(summary.items(), columns=["Domain", "Appearances"])\
-        .sort_values(by="Appearances", ascending=False)\
-        .to_csv("competitor_summary.csv", index=False)
+    # ✅ SAVE FILES (STATIC FOLDER RECOMMENDED)
+    pd.DataFrame(summary.items(), columns=["Domain", "Appearances"]) \
+        .sort_values(by="Appearances", ascending=False) \
+        .to_csv("static/competitor_summary.csv", index=False)
 
-    pd.DataFrame(keyword_rows, columns=["Keyword", "Position", "Domain"])\
-        .to_csv("keyword_competitor_table.csv", index=False)
+    pd.DataFrame(keyword_rows, columns=["Keyword", "Position", "Domain"]) \
+        .to_csv("static/keyword_competitor_table.csv", index=False)
 
-    pd.DataFrame(number1.items(), columns=["Domain", "Number1_Rankings"])\
-        .sort_values(by="Number1_Rankings", ascending=False)\
-        .to_csv("number1_rankings.csv", index=False)
+    pd.DataFrame(number1.items(), columns=["Domain", "Number1_Rankings"]) \
+        .sort_values(by="Number1_Rankings", ascending=False) \
+        .to_csv("static/number1_rankings.csv", index=False)
+
+    # ✅ RETURN RESULT
+    return {
+        "total_keywords": len(keywords),
+        "total_domains": len(summary),
+        "top_domain": summary.most_common(1)[0][0] if summary else None
+    }
