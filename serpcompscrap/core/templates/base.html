@@ -1,0 +1,67 @@
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SERP Competitor Scraper</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- GSAP for animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<!-- Icons -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Static CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="serp-bg"></div>
+<header class="navbar">
+    <div class="logo">SERP Tool</div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-left">
+            <h3>SERP Competitor Tool</h3>
+            <p>Built to analyze Google search competitors faster and smarter.</p>
+        </div>
+
+        <div class="footer-right">
+
+            <a href="https://github.com/TuhinSubhraSikdar" target="_blank" class="footer-link">
+                GitHub
+            </a>
+
+            <a href="https://in.linkedin.com/in/tuhin-subhra-sikdar" target="_blank" class="footer-link">
+                LinkedIn
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>Designed & Developed by <strong>Tuhin Subhra Sikdar</strong></p>
+    </div>
+</footer>
+
+<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
